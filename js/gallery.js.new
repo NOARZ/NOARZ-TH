@@ -1,0 +1,175 @@
+// --- Gallery Management ---
+export class Gallery {
+  constructor(galleryEl, prevBtn, nextBtn, dotsEl) {
+    this.gallery = galleryEl;
+    this.gprev = prevBtn;
+    this.gnext = nextBtn;
+    this.gdots = dotsEl;
+    this.slides = [];
+    this.slideIndex = 0;
+    this.startX = 0;
+    this.endX = 0;
+    this.isAnimating = false;
+
+    // Event listeners
+    this.gprev.addEventListener('click', () => !this.isAnimating && this.prevSlide());
+    this.gnext.addEventListener('click', () => !this.isAnimating && this.nextSlide());
+    
+    // Touch swipe
+    this.gallery.addEventListener('touchstart', e => {
+      if (this.isAnimating) return;
+      this.startX = e.changedTouches[0].clientX;
+    });
+    
+    this.gallery.addEventListener('touchend', e => {
+      if (this.isAnimating) return;
+      this.endX = e.changedTouches[0].clientX;
+      const dx = this.endX - this.startX;
+      if (Math.abs(dx) > 40) {
+        dx < 0 ? this.nextSlide() : this.prevSlide();
+      }
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft') this.prevSlide();
+      if (e.key === 'ArrowRight') this.nextSlide();
+    });
+  }
+
+  buildSlides(arr) {
+    console.log('Building slides with:', arr);
+    this.slides = arr;
+    this.gallery.querySelectorAll('.slide').forEach(n => n.remove());
+    this.gdots.innerHTML = '';
+
+    this.slides.forEach((s, i) => {
+      const el = document.createElement('div');
+      el.className = 'slide';
+
+      if (s.img) {
+        // Create image container for better control
+        const imgContainer = document.createElement('div');
+        imgContainer.className = 'img-container';
+        
+        // Create loading indicator
+        const loader = document.createElement('div');
+        loader.className = 'loader';
+        imgContainer.appendChild(loader);
+        
+        // Create image element
+        const img = document.createElement('img');
+        img.alt = s.caption || 'Gallery image';
+        img.style.display = 'none';
+        
+        // Handle image load
+        img.onload = () => {
+          loader.remove();
+          img.style.display = 'block';
+        };
+        
+        // Handle image error
+        img.onerror = () => {
+          console.error(`Failed to load image: ${s.img}`);
+          loader.remove();
+          el.style.background = this.gradientBG(s.h || (i * 60) % 360);
+        };
+        
+        // Start loading the image
+        img.src = s.img;
+        imgContainer.appendChild(img);
+        el.appendChild(imgContainer);
+      } else {
+        el.style.background = this.gradientBG(s.h || (i * 60) % 360);
+      }
+
+      if (s.caption) {
+        const caption = document.createElement('div');
+        caption.className = 'caption';
+        caption.textContent = s.caption || '';
+        el.appendChild(caption);
+      }
+
+      if (i === 0) el.classList.add('active');
+      this.gallery.appendChild(el);
+
+      // Create navigation dot
+      const dot = document.createElement('button');
+      dot.setAttribute('aria-label', `Show slide ${i + 1}`);
+      dot.addEventListener('click', () => !this.isAnimating && this.showSlide(i));
+      this.gdots.appendChild(dot);
+    });
+
+    this.updateDots();
+    console.log('Gallery build complete');
+  }
+
+  showSlide(i) {
+    if (!this.slides || this.slides.length === 0 || this.isAnimating) return;
+    
+    const newIndex = ((i % this.slides.length) + this.slides.length) % this.slides.length;
+    if (newIndex === this.slideIndex) return;
+
+    this.isAnimating = true;
+    const slides = this.gallery.querySelectorAll('.slide');
+    const currentSlide = slides[this.slideIndex];
+    const nextSlide = slides[newIndex];
+    
+    // Determine animation direction
+    const direction = newIndex > this.slideIndex ? 1 : -1;
+    
+    // Set initial positions
+    nextSlide.style.transform = `translateX(${100 * direction}%)`;
+    nextSlide.classList.add('active');
+    
+    // Trigger animation
+    requestAnimationFrame(() => {
+      nextSlide.style.transition = 'transform 0.4s ease';
+      currentSlide.style.transition = 'transform 0.4s ease';
+      nextSlide.style.transform = 'translateX(0)';
+      currentSlide.style.transform = `translateX(${-100 * direction}%)`;
+      
+      // Clean up after animation
+      setTimeout(() => {
+        currentSlide.classList.remove('active');
+        currentSlide.style.transition = '';
+        currentSlide.style.transform = '';
+        nextSlide.style.transition = '';
+        this.slideIndex = newIndex;
+        this.updateDots();
+        this.isAnimating = false;
+      }, 400);
+    });
+  }
+
+  nextSlide() {
+    this.showSlide(this.slideIndex + 1);
+  }
+
+  prevSlide() {
+    this.showSlide(this.slideIndex - 1);
+  }
+
+  updateDots() {
+    const dots = this.gdots.querySelectorAll('button');
+    dots.forEach((d, idx) => {
+      d.classList.toggle('active', idx === this.slideIndex);
+      d.setAttribute('aria-current', idx === this.slideIndex ? 'true' : 'false');
+    });
+  }
+
+  gradientBG(h) {
+    return `radial-gradient(80% 70% at 65% 20%, 
+              hsla(${h},85%,65%,.35), 
+              transparent 50%
+            ),
+            linear-gradient(135deg, 
+              hsla(${h},80%,60%,.35), 
+              hsla(${(h+60)%360},80%,60%,.2)
+            ),
+            radial-gradient(50% 50% at 30% 80%, 
+              hsla(${(h+30)%360},75%,65%,.25), 
+              transparent 50%
+            )`;
+  }
+}

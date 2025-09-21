@@ -45,6 +45,52 @@ const data = {
       "copyText": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua\", true))()",
       "scriptText": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua\", true))()",
       "id": "20250921_145938"
+    },
+    {
+      "type": "scripts",
+      "title": "Fish it! JinkX HUB",
+      "desc": "สคริปต์ Fish it! 🎣 ออโต้ตกปลา+ขายทันที พร้อมทำเบ็ด Ghostfin และตกปลาอีเว้นท์ให้อัตโนมัติ",
+      "tags": [
+        "Fish it!"
+      ],
+      "coverImage": "images/20250921_151137.png",
+      "coverHue": 210,
+      "url": "",
+      "gallery": [
+        {
+          "img": "images/20250921_151241.png",
+          "caption": ""
+        }
+      ],
+      "actionType": "copy",
+      "primaryButtonText": "เปิดสคริปต์",
+      "copyButtonText": "คัดลอก",
+      "copyText": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/stormskmonkey/JinkX/refs/heads/main/Loader.lua\"))()",
+      "scriptText": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/stormskmonkey/JinkX/refs/heads/main/Loader.lua\"))()",
+      "id": "20250921_151243"
+    },
+    {
+      "type": "scripts",
+      "title": "99 Nights in Forest H4x HUB",
+      "desc": "แจกฟรี! Script 99 Nights in Forest 🌙 Auto Chop, Auto Loot ทั้งแมพ, ตีมอน และปลูกต้นไม้รอบ Campfire เองได้ [ล่าสุด]",
+      "tags": [
+        "99 Nights in Forest"
+      ],
+      "coverImage": "images/20250921_151629.png",
+      "coverHue": 210,
+      "url": "",
+      "gallery": [
+        {
+          "img": "images/20250921_151913.png",
+          "caption": ""
+        }
+      ],
+      "actionType": "copy",
+      "primaryButtonText": "เปิดสคริปต์",
+      "copyButtonText": "คัดลอก",
+      "copyText": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/H4xScripts/Loader/refs/heads/main/loader.lua\", true))()",
+      "scriptText": "loadstring(game:HttpGet(\"https://raw.githubusercontent.com/H4xScripts/Loader/refs/heads/main/loader.lua\", true))()",
+      "id": "20250921_151914"
     }
   ],
   "runners": [

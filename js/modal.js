@@ -79,7 +79,7 @@ export class Modal {
     // Add closing class to trigger animation
     this.overlay.classList.add('closing');
     
-    // Clean gallery state without replacing DOM elements
+    // Clean gallery state without removing navigation
     if (this.gallery) {
       this.gallery.isAnimating = false;
       if (this.gallery.animationTimeout) {
@@ -87,7 +87,7 @@ export class Modal {
         this.gallery.animationTimeout = null;
       }
       
-      // Just reset styles of existing slides
+      // Reset styles of existing slides
       if (this.gallery.gallery) {
         const slides = this.gallery.gallery.querySelectorAll('.slide');
         slides.forEach(slide => {
@@ -96,8 +96,9 @@ export class Modal {
           slide.style.opacity = '';
           slide.style.visibility = '';
         });
-        // Clear gallery content
-        this.gallery.gallery.innerHTML = '';
+        
+        // Remove only slides, keeping navigation
+        slides.forEach(slide => slide.remove());
       }
     }
 

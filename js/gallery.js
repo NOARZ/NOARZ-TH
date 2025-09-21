@@ -106,7 +106,34 @@ export class Gallery {
     console.log('Building slides with:', arr);
     // Clear existing state  
     this.slides = arr;
-    this.gallery.querySelectorAll('.slide').forEach(n => n.remove());
+    this.gallery.innerHTML = '';
+
+    // Rebuild navigation elements
+    const galleryNav = document.createElement('div');
+    galleryNav.className = 'gallery-nav';
+    galleryNav.innerHTML = `
+      <button class="gallery-btn prev" id="gprev" aria-label="รูปก่อนหน้า">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M15 18l-6-6 6-6"></path>
+        </svg>
+      </button>
+      <button class="gallery-btn next" id="gnext" aria-label="รูปถัดไป">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 18l6-6-6-6"></path>
+        </svg>
+      </button>
+    `;
+    this.gallery.appendChild(galleryNav);
+
+    // Update navigation button references
+    this.gprev = galleryNav.querySelector('.prev');
+    this.gnext = galleryNav.querySelector('.next');
+
+    // Reattach event listeners
+    this.gprev.addEventListener('click', () => !this.isAnimating && this.prevSlide());
+    this.gnext.addEventListener('click', () => !this.isAnimating && this.nextSlide());
+
+    // Clear other states
     this.gdots.innerHTML = '';
     this.preloadedImages.clear();
     this.isAnimating = false;

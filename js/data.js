@@ -7,7 +7,7 @@ const data = {
       "tags": [
         "Blox Fruits"
       ],
-      "coverImage": "images/20250921_142115.png",
+      "coverImage": "images/20250921_233210.png",
       "coverHue": 210,
       "url": "",
       "gallery": [
@@ -103,7 +103,7 @@ const data = {
       ],
       "coverImage": "images/20250921_135623.png",
       "coverHue": 210,
-      "url": "https://deltaexploits.gg/delta-executor-android",
+      "url": "https://cdn.gloopup.net/file/Delta-2.689.880.apk",
       "gallery": [],
       "id": "20250921_135627"
     },
